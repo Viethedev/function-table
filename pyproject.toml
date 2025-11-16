@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "function-table"
+version = "0.1.0"
+description = "Learn a callable function from a table of inputs and outputs using XGBoost."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+keywords = ["xgboost", "function", "table", "regression"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy>=1.22",
+    "xgboost>=2.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Viethedev/function-table"
+"Repository" = "https://github.com/Viethedev/function-table"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*"]
