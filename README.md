@@ -18,8 +18,6 @@ outputs = [[0], [1], [4], [9], [16]]  # y = x^2
 
 f = FunctionTable(inputs, outputs)
 print(f(2))
-print(f([5, 6, 7]))
-print(f[1])
 ```
 
 License

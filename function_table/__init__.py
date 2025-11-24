@@ -1,6 +1,6 @@
 """FunctionTable package
 
-Provides `FunctionTable`, a callable mapping learned from input/output table using XGBoost.
+Provides `FunctionTable`, a callable object learned from input/output table using XGBoost.
 """
 from __future__ import annotations
 
@@ -17,8 +17,7 @@ class FunctionTable:
 
     Notes
     -----
-    - Trains one XGBoost regressor per output dimension.
-    - Attempts to use GPU (`tree_method = 'gpu_hist'`) when available.
+    - Attempts to use GPU when available.
     - Immutable after construction.
     """
 
@@ -75,13 +74,6 @@ class FunctionTable:
             predictions = predictions.round(round_digits)
 
         return predictions if numpy else predictions.tolist()
-
-    def __getitem__(self, keys):
-        """Bracket-style access: f[var1, var2, ...] -> f(var1, var2, ...)
-        """
-        if not isinstance(keys, tuple):
-            keys = (keys,)
-        return self(*keys)
 
     def __repr__(self):
         return f"{super().__repr__()} [inputs={self._number_of_inputs}, outputs={self._number_of_outputs}]"
