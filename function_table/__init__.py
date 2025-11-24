@@ -27,20 +27,36 @@ class FunctionTable:
         X = np.array(inputs, dtype=float)
         Y = np.array(outputs, dtype=float)
 
+        # Normalize shapes:
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+
+        if Y.ndim == 1:
+            # If length matches number of input rows, treat as column vector
+            if Y.shape[0] == X.shape[0]:
+                Y = Y.reshape(-1, 1)
+            else:
+                Y = Y.reshape(1, -1)
+
+        if X.shape[0] != Y.shape[0]:
+            raise ValueError(
+                f"Number of input rows ({X.shape[0]}) does not match number of output rows ({Y.shape[0]})"
+            )
+
         object.__setattr__(self, "_number_of_inputs", X.shape[1])
         object.__setattr__(self, "_number_of_outputs", Y.shape[1])
         object.__setattr__(self, "_models", [])
 
-        # Auto-detect device internally
+        # Auto-detect device internally (prefer GPU if available)
         try:
-            # quick test to see if GPU method is available
-            _ = xgb.train({"tree_method": "gpu_hist"}, xgb.DMatrix(np.array([[0.0]])), num_boost_round=1)
+            dtest = xgb.DMatrix(np.array([[0.0]]), label=np.array([0.0]))
+            _ = xgb.train({"tree_method": "gpu_hist"}, dtest, num_boost_round=1)
             tree_method = "gpu_hist"
         except Exception:
             tree_method = "hist"
 
         # Train one booster per output dimension
-        for i in range(self.number_of_outputs):
+        for i in range(self._number_of_outputs):
             y = Y[:, i]
             dtrain = xgb.DMatrix(X, label=y)
             params = {
@@ -62,9 +78,9 @@ class FunctionTable:
         else:
             arr = np.array(args, dtype=float).reshape(1, -1)
 
-        if arr.shape[1] != self.number_of_inputs:
+        if arr.shape[1] != self._number_of_inputs:
             raise ValueError(
-                f"Input shape mismatch: expected {self.number_of_inputs} features, got {arr.shape[1]}"
+                f"Input shape mismatch: expected {self._number_of_inputs} features, got {arr.shape[1]}"
             )
 
         dtest = xgb.DMatrix(arr)
@@ -78,5 +94,3 @@ class FunctionTable:
     def __repr__(self):
         return f"{super().__repr__()} [inputs={self._number_of_inputs}, outputs={self._number_of_outputs}]"
 
-    def __setattr__(self, key, value):
-        raise AttributeError("FunctionTable objects are immutable.")
