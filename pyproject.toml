@@ -9,6 +9,7 @@ description = "Learn a callable function from a table of inputs and outputs usin
 readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
+author = [{name = "Viethedev"}]
 keywords = ["xgboost", "function", "table", "regression"]
 classifiers = [
     "Programming Language :: Python :: 3",
