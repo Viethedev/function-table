@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "function-table"
-version = "0.1.1"
+version = "0.2.0"
 description = "Learn a callable function from a table of inputs and outputs using XGBoost."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [{name = "Viethedev"}]
 keywords = ["xgboost", "function", "table", "regression"]
@@ -18,8 +18,8 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy>=1.22",
-    "xgboost>=2.0",
+    "numpy>=2.0",
+    "xgboost>=3.0",
 ]
 
 [project.urls]

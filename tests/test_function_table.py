@@ -1,11 +1,11 @@
 import numpy as np
-from function_table import FunctionTable
+from function_table import FTable
 
 
 def test_basic_square():
     inputs = [[0], [1], [2], [3], [4]]
     outputs = [[0], [1], [4], [9], [16]]
-    f = FunctionTable(inputs, outputs)
+    f = FTable(inputs, outputs)
 
     res = f(2, numpy=True)
     assert isinstance(res, np.ndarray)
